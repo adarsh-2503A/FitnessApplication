@@ -6,6 +6,7 @@ import com.adi.activityservice.repository.ActivityRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
@@ -19,10 +20,22 @@ public class ActivityServiceImpl implements ActivityService{
     @Autowired
     private ActivityRepository activityRepository;
 
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
     private final ObjectMapper objectMapper=new ObjectMapper();
 
     @Override
     public ActivityDTO addActivity(ActivityDTO activityDTO) {
+        Boolean userExists=webClientBuilder.build()
+                .get()
+                .uri("http://userservice/api/users/validate/"+activityDTO.getUserId())
+                .retrieve()
+                .bodyToMono(Boolean.class)
+                .block();
+        if(Boolean.TRUE.equals(userExists) ==false)
+            throw new MyCustomException("user.not.valid");
+
         //demonstration of Builder design pattern which is implemented like this in java.
         Activity activity=Activity.builder()
                 .userId(activityDTO.getUserId())

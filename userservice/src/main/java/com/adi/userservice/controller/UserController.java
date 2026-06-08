@@ -24,4 +24,9 @@ public class UserController {
     public ResponseEntity<UserDTO> registerUser(@Valid @RequestBody UserDTO user){
         return new ResponseEntity<>(userService.registerUser(user),HttpStatus.CREATED);
     }
+
+    @GetMapping("/validate/{userId}")
+    public ResponseEntity<Boolean> validateUser(@PathVariable String userId){
+        return new ResponseEntity<>(userService.existsByUserId(userId), HttpStatus.OK);
+    }
 }
