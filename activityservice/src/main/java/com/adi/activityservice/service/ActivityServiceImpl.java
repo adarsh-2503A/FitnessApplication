@@ -43,6 +43,7 @@ public class ActivityServiceImpl implements ActivityService{
                 .duration(activityDTO.getDuration())
                 .caloriesBurned(activityDTO.getCaloriesBurned())
                 .startTime(activityDTO.getStartTime())
+                .additionalMetrics(activityDTO.getAdditionalMetrics())
                 .build();
         Activity activity1 = activityRepository.save(activity);
         return objectMapper.convertValue(activity1,ActivityDTO.class);

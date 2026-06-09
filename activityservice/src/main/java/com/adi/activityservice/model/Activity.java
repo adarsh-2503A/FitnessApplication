@@ -7,9 +7,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Entity
 @Table(name="activities")
@@ -27,6 +30,9 @@ public class Activity {
     private ActivityType activityType;
     private Integer duration;
     private Integer caloriesBurned;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name="additional_metrics",columnDefinition = "json")
+    private Map<String,Object> additionalMetrics;
     private LocalDateTime startTime;
     @CreationTimestamp
     private LocalDateTime createdAt;
