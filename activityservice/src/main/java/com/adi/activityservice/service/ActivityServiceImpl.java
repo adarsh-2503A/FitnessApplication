@@ -23,6 +23,9 @@ public class ActivityServiceImpl implements ActivityService{
     @Autowired
     private WebClient.Builder webClientBuilder;
 
+    @Autowired
+    private ActivityProducer activityProducer;
+
     private final ObjectMapper objectMapper=new ObjectMapper();
 
     @Override
@@ -46,6 +49,7 @@ public class ActivityServiceImpl implements ActivityService{
                 .additionalMetrics(activityDTO.getAdditionalMetrics())
                 .build();
         Activity activity1 = activityRepository.save(activity);
+        activityProducer.sendMessage(activity1);//asynchronous messaging to rabbitMQ
         return objectMapper.convertValue(activity1,ActivityDTO.class);
     }
 
