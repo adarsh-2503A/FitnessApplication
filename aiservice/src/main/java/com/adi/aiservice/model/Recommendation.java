@@ -1,9 +1,13 @@
 package com.adi.aiservice.model;
 
+import com.adi.aiservice.config.ActivityType;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,9 +23,19 @@ public class Recommendation {
     private String userId;
     @Column(nullable = false)
     private Integer activityId;
-    private String activityType;
-    private String recommendation;
-    private List<String> improvements;
+    @Enumerated(EnumType.STRING)
+    private ActivityType activityType;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "analysis",columnDefinition = "json")
+    private AnalysisRecord analysis;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "improvements",columnDefinition = "json")
+    private List<ImprovementRecord> improvements;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "suggestions",columnDefinition = "json")
+    private List<SuggestionRecord> suggestions;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "safety",columnDefinition = "json")
     private List<String> safety;
 
     @CreationTimestamp
