@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Service
@@ -33,9 +34,14 @@ public class ActivityAiService {
         PromptTemplate promptTemplate=new PromptTemplate(systemPrompt);
         Map<String,Object> activityMap=Map.of("activityType",activity.getActivityType(),"duration",activity.getDuration(),"caloriesBurned",activity.getCaloriesBurned(),"additionalMetrics",activity.getAdditionalMetrics(),"outputFormat",opFormat);
         Recommendation recommendation=chatClient.prompt(promptTemplate.create(activityMap)).call().entity(Recommendation.class);
-        recommendation.setActivityId(activity.getId());
-        recommendation.setActivityType(activity.getActivityType());
-        recommendation.setUserId(activity.getUserId());
-        return recommendation;
+        Recommendation finalRecommendation=new Recommendation();
+        finalRecommendation.setActivityId(activity.getId());
+        finalRecommendation.setActivityType(activity.getActivityType());
+        finalRecommendation.setUserId(activity.getUserId());
+        finalRecommendation.setAnalysis(recommendation.getAnalysis());
+        finalRecommendation.setImprovements(recommendation.getImprovements());
+        finalRecommendation.setSafety(recommendation.getSafety());
+        finalRecommendation.setSuggestions(recommendation.getSuggestions());
+        return finalRecommendation;
     }
 }
