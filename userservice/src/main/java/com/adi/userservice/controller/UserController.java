@@ -25,8 +25,8 @@ public class UserController {
         return new ResponseEntity<>(userService.registerUser(user),HttpStatus.CREATED);
     }
 
-    @GetMapping("/validate/{userId}")
-    public ResponseEntity<Boolean> validateUser(@PathVariable String userId){
-        return new ResponseEntity<>(userService.existsByUserId(userId), HttpStatus.OK);
+    @GetMapping("/validate/{keyCloakId}")
+    public ResponseEntity<Boolean> validateUser(@PathVariable String keyCloakId){
+        return new ResponseEntity<>(userService.existsByKeyCloakId(keyCloakId), HttpStatus.OK);
     }
 }

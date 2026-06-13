@@ -12,6 +12,8 @@ public class UserDTO {
 
     private String id;
 
+    private String keyCloakId;
+
     @NotBlank(message = "{user.email.required}")
     @Email(message = "{user.email.invalid}")
     private String email;

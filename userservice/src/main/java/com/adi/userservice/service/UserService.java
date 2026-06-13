@@ -6,5 +6,5 @@ public interface UserService {
     UserDTO getUser(String userId);
     UserDTO registerUser(UserDTO userDTO);
 
-    Boolean existsByUserId(String userId);
+    Boolean existsByKeyCloakId(String keyCloakId);
 }
