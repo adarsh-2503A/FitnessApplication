@@ -17,7 +17,8 @@ public class ActivityController {
     private ActivityService activityService;
 
     @PostMapping
-    public ResponseEntity<ActivityDTO> addActivity(@RequestBody ActivityDTO activityDTO){
+    public ResponseEntity<ActivityDTO> addActivity(@RequestBody ActivityDTO activityDTO,@RequestHeader("X-USER-ID") String userId){
+        activityDTO.setUserId(userId);
         return new ResponseEntity<>(activityService.addActivity(activityDTO), HttpStatus.CREATED);
     }
 
